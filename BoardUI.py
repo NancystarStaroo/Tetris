@@ -1,24 +1,24 @@
-from PyQt5.QtWidgets import QWidget, QApplication, QAction
-from PyQt5.QtCore import pyqtSignal, Qt, QBasicTimer
-from PyQt5.QtGui import QPainter, QColor, QBrush
-from Shape import Shape
+from PyQt5 import QtWidgets, QtCore, QtGui
 import sys, random
+from PyQt5.QtWidgets import QApplication, qApp
+from Shape import Shape
+from PyQt5.QtCore import Qt
 
-class BoardUI(QWidget):
+class BoardUI(QtWidgets.QWidget):
     """游戏主要界面绘制，方块的绘制"""
 
     squareWidth = 30
     squareHeight = 30
-    boardWidth = 20
+    boardWidth = 10
     boardHeight = 20
     dropSpeed = 300 # 300ms
     pixWidth = squareWidth * boardWidth
     pixHeight = squareHeight * boardHeight
-    msg2statusBar = pyqtSignal(str)
+
+    msg2statusBar = QtCore.pyqtSignal(str)
 
     def __init__(self, parent):
         super().__init__(parent)
-
         self.setWindowTitle("Game")
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight)
         self.squares = []  # [x, y, color]
@@ -29,7 +29,10 @@ class BoardUI(QWidget):
         self.status = False # True is start 
         self.pause = False # True is pause
         
-        self.timer = QBasicTimer()
+        self.timer = QtCore.QBasicTimer()
+        
+        # self.setFocusPolicy(Qt.StrongFocus) # 因为Tetris将keyEvent直接传递给BoardUI, 所以不需要获得当前的Focus
+
 
     def getPix(self, x, y): # 将相对的坐标转化为图上绝对的像素点坐标
         return [x*BoardUI.squareWidth, y*BoardUI.squareHeight]
@@ -38,7 +41,7 @@ class BoardUI(QWidget):
         return [ [x+self.X, y+self.Y] for x, y in points ]
 
     def paintEvent(self, event):
-        paint = QPainter()
+        paint = QtGui.QPainter()
         paint.begin(self)
 
 
@@ -56,9 +59,9 @@ class BoardUI(QWidget):
         paint.end()
 
     def drawSquare(self, point, paint, event, color):
-        QCol = QColor()
+        QCol = QtGui.QColor()
         QCol.setNamedColor(color)
-        paint.setBrush(QBrush(QCol))
+        paint.setBrush(QtGui.QBrush(QCol))
         # paint.setPen(QCol)
         paint.drawRect(*point, BoardUI.squareWidth, BoardUI.squareHeight)
 
@@ -118,6 +121,14 @@ class BoardUI(QWidget):
             self.start()          
         elif self.status == False:
             pass
+        elif key == Qt.Key_H:
+            pass
+        elif key == Qt.Key_V:
+            pass
+        elif key == Qt.Key_R:
+            pass
+        elif key == Qt.Key_Q:
+            qApp.quit()
         elif key == Qt.Key_P:
             self.PauseOrRestart()
         elif self.status == True and self.pause == True:
@@ -219,3 +230,9 @@ class BoardUI(QWidget):
 
         self.readyRemoveLine() # 检查是否删除
 
+    def viewRank(self):
+        pass
+
+    def restart(self):
+        self.initBoard()
+        self.start()
