@@ -11,13 +11,16 @@ class Tetris(QMainWindow):
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight+30)
 # 
         initWidget = QWidget(self)
-        startButton = QPushButton('开始(S)')
+        startButton = QPushButton('开始')
+        exitButton = QPushButton('退出')
         startButton.clicked.connect(self.gameStart)
+        exitButton.clicked.connect(qApp.quit)
         startButton.setShortcut('S') #设置快捷方式
 
         hbox = QHBoxLayout()  # 设置水平垂直居中
         hbox.addStretch(1)
         hbox.addWidget(startButton)
+        hbox.addWidget(exitButton)
         hbox.addStretch(1)
         vbox = QVBoxLayout()
         vbox.addStretch(1)
