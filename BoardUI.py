@@ -1,6 +1,7 @@
+from PyQt5.QtGui import QIcon
 from PyQt5 import QtWidgets, QtCore, QtGui
 import sys, random
-from PyQt5.QtWidgets import QApplication, qApp
+from PyQt5.QtWidgets import QApplication, qApp, QDialog, QWidget, QInputDialog, QMessageBox
 from Shape import Shape
 from PyQt5.QtCore import Qt
 
@@ -19,6 +20,7 @@ class BoardUI(QtWidgets.QWidget):
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.setWindowIcon(QIcon('icon.jpg'))
         self.setWindowTitle("Game")
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight)
         self.squares = []  # [x, y, color]
@@ -26,7 +28,8 @@ class BoardUI(QtWidgets.QWidget):
         self.Y = 0
         self.SQ = None
         self.removedLineNum = 0
-        self.status = False # True is start 
+        self.grade = []
+        self.status = False # True is start
         self.pause = False # True is pause
         
         self.timer = QtCore.QBasicTimer()
@@ -75,7 +78,9 @@ class BoardUI(QtWidgets.QWidget):
         if not self.canPut(self.SQ)[0]: # 一开始就放不了了 ， 那就是结束了
             self.timer.stop()
             self.status = False
+            self.grade.append(str(self.removedLineNum))
             self.msg2statusBar.emit('Game Over, your score is ' + str(self.removedLineNum))
+            
 
 
     def start(self):
@@ -236,3 +241,8 @@ class BoardUI(QtWidgets.QWidget):
     def restart(self):
         self.initBoard()
         self.start()
+
+
+    def showEmptyDialog(self):
+
+        QMessageBox.information(self, "信息提示框", "你当前的分数是"+ str(self.removedLineNum))

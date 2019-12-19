@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QInputDialog, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, QAction, qApp
 
 import sys
@@ -8,6 +9,7 @@ class Tetris(QMainWindow):
         super(Tetris, self).__init__()
 
         self.setWindowTitle(title)
+        self.setWindowIcon(QIcon('icon.jpg'))
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight+30)
 # 
         initWidget = QWidget(self)
@@ -68,7 +70,7 @@ class Tetris(QMainWindow):
         qpause.triggered.connect(self.UI.PauseOrRestart)
         qrestart.triggered.connect(self.UI.restart)
         qhelp.triggered.connect(self.showDialog)
-        qrank.triggered.connect(self.UI.viewRank)
+        qrank.triggered.connect(self.UI.showEmptyDialog)
 
         self.sBar = self.statusBar()
         self.UI.msg2statusBar[str].connect(self.sBar.showMessage)
