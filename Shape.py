@@ -29,8 +29,8 @@ class Shape():
 
     def getRandomShape(self):
         self.type = random.randint(1,7) # 1 <= N <=7
-        self.vertex = [ list(v) for v in BlockType.init_shape[self.type] ] # 所有tuple 转化为list
-        self.color = hex(random.randint(0,0xffffff)).replace('0x', '#').upper() # '0xf2f5ab' 转化为 '#F2F5AB'
+        self.vertex = [list(v) for v in BlockType.init_shape[self.type]]  # 所有tuple 转化为list
+        self.color = hex(random.randint(0,0xffffff)).replace('0x', '#').upper()  # '0xf2f5ab' 转化为 '#F2F5AB'
 
     def rotate(self, str): # 旋转
         if not self.vertex or self.type == 4:
@@ -38,7 +38,7 @@ class Shape():
 
         nVertex = []
         if str == 'Clockwise':
-            for x, y in self.vertex: # 没个点变为（y, -x) 可根据极坐标得出: x = rcos(θ-π/2) = rsin(θ) = y
+            for x, y in self.vertex:  # 没个点变为（y, -x) 可根据极坐标得出: x = rcos(θ-π/2) = rsin(θ) = y
                 nVertex.append([y, -x])
 
         else:
@@ -47,13 +47,13 @@ class Shape():
 
         self.vertex = nVertex
 
-    def xRange(self): # x的范围
+    def xRange(self):  # x的范围
         xList = [v[0] for v in self.vertex]
         minX = min(xList)
         maxX = max(xList)
         return (minX, maxX)
 
-    def yRange(self): # y的范围
+    def yRange(self):  # y的范围
         yList = [v[1] for v in self.vertex]
         minY = min(yList)
         maxY = max(yList)

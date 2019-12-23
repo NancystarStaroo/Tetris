@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QApplication, qApp, QDialog, QWidget, QInputDialog, 
 from Shape import Shape
 from PyQt5.QtCore import Qt, pyqtSignal, QBasicTimer
 
-
 class BoardUI(QWidget):
     """游戏主要界面绘制，方块的绘制"""
 
@@ -11,7 +10,7 @@ class BoardUI(QWidget):
     squareHeight = 30
     boardWidth = 10
     boardHeight = 20
-    dropSpeed = 300 # 300ms
+    dropSpeed = 300
     pixWidth = squareWidth * boardWidth
     pixHeight = squareHeight * boardHeight
 
@@ -27,19 +26,15 @@ class BoardUI(QWidget):
         self.Y = 0
         self.SQ = None
         self.removedLineNum = 0
-
         self.grade = []
-        self.status = False # True is start
-        self.pause = False # True is pause
-
-        
+        self.status = False  # True is start
+        self.pause = False  # True is pause
         self.timer = QBasicTimer()
 
-
-    def getPix(self, x, y): # 将相对的坐标转化为图上绝对的像素点坐标
+    def getPix(self, x, y):
         return [x*BoardUI.squareWidth, y*BoardUI.squareHeight]
 
-    def RelPoints2AbsPoints(self, points): # 将相对的坐标转化为图上相对的坐标
+    def RelPoints2AbsPoints(self, points):
         return [ [x+self.X, y+self.Y] for x, y in points ]
 
     def paintEvent(self, event):
@@ -76,11 +71,12 @@ class BoardUI(QWidget):
 
         if not self.canPut(self.SQ)[0]: # 一开始就放不了了 ， 那就是结束了
             self.timer.stop()
+            self.grade.append(str(self.removedLineNum))
+            for i in self.grade:
+                print("你的分数是：" + i)
             self.status = False
             self.grade.append(str(self.removedLineNum))
             self.msg2statusBar.emit('Game Over, your score is ' + str(self.removedLineNum))
-            
-
 
     def start(self):
         self.initBoard()
@@ -103,7 +99,6 @@ class BoardUI(QWidget):
         self.Y = self.Y+1
         msg = self.canPut(self.SQ)
 
-        # print(msg)
 
         if msg[1] == 'out of buttom' or msg[1] == 'overlap': # 到达底部或出现重叠就说明不能放了
             self.Y -= 1
@@ -113,13 +108,10 @@ class BoardUI(QWidget):
         if not msg[0]:
             self.putShape()
 
-        print('time is over')
         self.update()
 
     def keyPressEvent(self, event):
         key = event.key()
-        print('Put Key:', key, self.status)
-
 
         if key == Qt.Key_S:
             self.start()          

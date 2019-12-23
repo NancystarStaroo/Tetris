@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QInputDialog, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, \
     QAction, qApp, QLineEdit, QFrame, QMessageBox, QLabel, QGridLayout
@@ -24,10 +24,11 @@ class Tetris(QMainWindow):
         self.pushButton_enter = QPushButton()
         self.pushButton_quit = QPushButton()
         self.pushButton_enter.setText("登录")
+        self.pushButton_enter.setShortcut('Enter')
         # self.pushButton_quit.setText("取消")
         grid = QGridLayout()
 
-        grid.setSpacing(10)
+        grid.setSpacing(5)
         grid.addWidget(self.title, 1, 0)
         grid.addWidget(self.title_line, 1, 1)
         grid.addWidget(self.password, 2, 0)
@@ -88,8 +89,7 @@ class Tetris(QMainWindow):
         self.UI.start()
 
     def showDialog(self):
-        text, ok = QInputDialog.getText(self, 'Feedback', 
-            'Please input your feadback:')
+        text, ok = QInputDialog.getText(self, 'Feedback', 'Please input your feedback:')
 
         if ok:
             self.le.setText(str(text))
@@ -103,13 +103,9 @@ class Tetris(QMainWindow):
             self.gameStart()
 
         else:
-            QMessageBox.warning(self,
-                                "警告",
-                                "用户名或密码错误！",
-                                QMessageBox.Yes)
+            QMessageBox.warning(self, "警告", "用户名或密码错误！", QMessageBox.Yes)
             self.lineEdit.setFocus()
 
-
     def keyPressEvent(self, event):
-        self.centralWidget().keyPressEvent(event)  # 传递给centralWidget
+        self.centralWidget().keyPressEvent(event)
 
