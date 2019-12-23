@@ -1,4 +1,5 @@
 from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QInputDialog, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, \
     QAction, qApp, QLineEdit, QFrame, QMessageBox
 
@@ -10,6 +11,7 @@ class Tetris(QMainWindow):
         super(Tetris, self).__init__()
 
         self.setWindowTitle(title)
+        self.setWindowIcon(QIcon('icon.jpg'))
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight+30)
 
 

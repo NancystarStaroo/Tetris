@@ -1,10 +1,10 @@
-from PyQt5 import QtWidgets, QtCore, QtGui
-import sys, random
-from PyQt5.QtWidgets import QApplication, qApp, QMessageBox, QWidget
+from PyQt5.QtGui import QIcon, QColor, QBrush, QPainter
+from PyQt5.QtWidgets import QApplication, qApp, QDialog, QWidget, QInputDialog, QMessageBox
 from Shape import Shape
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal, QBasicTimer
 
-class BoardUI(QtWidgets.QWidget):
+
+class BoardUI(QWidget):
     """游戏主要界面绘制，方块的绘制"""
 
     squareWidth = 30
@@ -15,10 +15,11 @@ class BoardUI(QtWidgets.QWidget):
     pixWidth = squareWidth * boardWidth
     pixHeight = squareHeight * boardHeight
 
-    msg2statusBar = QtCore.pyqtSignal(str)
+    msg2statusBar = pyqtSignal(str)
 
     def __init__(self, parent):
         super().__init__(parent)
+        self.setWindowIcon(QIcon('icon.jpg'))
         self.setWindowTitle("Game")
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight)
         self.squares = []  # [x, y, color]
@@ -26,10 +27,13 @@ class BoardUI(QtWidgets.QWidget):
         self.Y = 0
         self.SQ = None
         self.removedLineNum = 0
-        self.status = False  # True is start
-        self.pause = False  # True is pause
+
+        self.grade = []
+        self.status = False # True is start
+        self.pause = False # True is pause
+
         
-        self.timer = QtCore.QBasicTimer()
+        self.timer = QBasicTimer()
 
 
     def getPix(self, x, y): # 将相对的坐标转化为图上绝对的像素点坐标
@@ -39,7 +43,7 @@ class BoardUI(QtWidgets.QWidget):
         return [ [x+self.X, y+self.Y] for x, y in points ]
 
     def paintEvent(self, event):
-        paint = QtGui.QPainter()
+        paint = QPainter()
         paint.begin(self)
 
 
@@ -57,9 +61,9 @@ class BoardUI(QtWidgets.QWidget):
         paint.end()
 
     def drawSquare(self, point, paint, event, color):
-        QCol = QtGui.QColor()
+        QCol = QColor()
         QCol.setNamedColor(color)
-        paint.setBrush(QtGui.QBrush(QCol))
+        paint.setBrush(QBrush(QCol))
         # paint.setPen(QCol)
         paint.drawRect(*point, BoardUI.squareWidth, BoardUI.squareHeight)
 
@@ -73,7 +77,9 @@ class BoardUI(QtWidgets.QWidget):
         if not self.canPut(self.SQ)[0]: # 一开始就放不了了 ， 那就是结束了
             self.timer.stop()
             self.status = False
+            self.grade.append(str(self.removedLineNum))
             self.msg2statusBar.emit('Game Over, your score is ' + str(self.removedLineNum))
+            
 
 
     def start(self):
@@ -236,8 +242,6 @@ class BoardUI(QtWidgets.QWidget):
         self.start()
 
     def showEmptyDialog(self):
-        # newWindow = SecondWindow()
-        # newWindow.show()
-        # newWindow.exec_()
-        QMessageBox.information(self, "信息提示框", "你当前的分数是" + str(self.removedLineNum))
+
+        QMessageBox.information(self, "信息提示框", "你当前的分数是"+ str(self.removedLineNum))
 
