@@ -25,7 +25,7 @@ class Tetris(QMainWindow):
         self.pushButton_quit = QPushButton()
         self.pushButton_enter.setText("登录")
         self.pushButton_enter.setShortcut('Enter')
-        # self.pushButton_quit.setText("取消")
+        self.pushButton_quit.setText("取消")
         grid = QGridLayout()
 
         grid.setSpacing(5)
@@ -34,10 +34,10 @@ class Tetris(QMainWindow):
         grid.addWidget(self.password, 2, 0)
         grid.addWidget(self.password_line, 2, 1)
         grid.addWidget(self.pushButton_enter)
-        # grid.addWidget(self.pushButton_quit)
+        grid.addWidget(self.pushButton_quit)
 
         self.pushButton_enter.clicked.connect(self.on_pushButton_enter_clicked)
-        #self.pushButton_quit.clicked.connect(QCoreApplication.instance().quit)
+        self.pushButton_quit.clicked.connect(QCoreApplication.instance().quit)
 
         initWidget.setLayout(grid)
         self.setCentralWidget(initWidget)
@@ -50,7 +50,10 @@ class Tetris(QMainWindow):
             (screen.height()-size.height())/2)
 
     def gameStart(self):
-     
+        # pygame.init()
+        # sound = pygame.mixer.Sound("C:\Users\Xuan\Music\纯音乐.wav")
+        # sound.set_volume(1)
+        # sound.play()
         self.UI = BoardUI(self)
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight+30)
 
@@ -64,6 +67,7 @@ class Tetris(QMainWindow):
         qrestart = QAction('重新开始', self)
         qrestart.setShortcut('R')
         qrank = QAction('查看排名', self)
+
         qrank.setShortcut('V')
         qhelp = QAction('反馈', self)
         qhelp.setShortcut('H')
@@ -79,6 +83,7 @@ class Tetris(QMainWindow):
         qrestart.triggered.connect(self.UI.restart)
         qhelp.triggered.connect(self.showDialog)
         qrank.triggered.connect(self.UI.showEmptyDialog)
+     
 
         self.sBar = self.statusBar()
         self.UI.msg2statusBar[str].connect(self.sBar.showMessage)

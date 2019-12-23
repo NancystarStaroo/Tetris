@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, qApp, QDialog, QWidget, QInputDialog, 
 from Shape import Shape
 from PyQt5.QtCore import Qt, pyqtSignal, QBasicTimer
 
+
 class BoardUI(QWidget):
     """游戏主要界面绘制，方块的绘制"""
 
@@ -13,6 +14,7 @@ class BoardUI(QWidget):
     dropSpeed = 300
     pixWidth = squareWidth * boardWidth
     pixHeight = squareHeight * boardHeight
+
 
     msg2statusBar = pyqtSignal(str)
 
@@ -71,12 +73,14 @@ class BoardUI(QWidget):
 
         if not self.canPut(self.SQ)[0]: # 一开始就放不了了 ， 那就是结束了
             self.timer.stop()
-            self.grade.append(str(self.removedLineNum))
-            for i in self.grade:
-                print("你的分数是：" + i)
             self.status = False
             self.grade.append(str(self.removedLineNum))
-            self.msg2statusBar.emit('Game Over, your score is ' + str(self.removedLineNum))
+            replay = QMessageBox.question(self, 'Message', 'Game Over! Do you want to play again?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+
+            if replay == QMessageBox.No:
+                self.ignore()
+            else:
+                self.restart()
 
     def start(self):
         self.initBoard()
