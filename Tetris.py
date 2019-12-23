@@ -24,19 +24,19 @@ class Tetris(QMainWindow):
         self.pushButton_enter = QPushButton()
         self.pushButton_quit = QPushButton()
         self.pushButton_enter.setText("登录")
-        self.pushButton_quit.setText("取消")
-
+        # self.pushButton_quit.setText("取消")
         grid = QGridLayout()
+
         grid.setSpacing(10)
         grid.addWidget(self.title, 1, 0)
         grid.addWidget(self.title_line, 1, 1)
         grid.addWidget(self.password, 2, 0)
         grid.addWidget(self.password_line, 2, 1)
-        grid.addWidget(self.pushButton_enter, 3, 0)
-        grid.addWidget(self.pushButton_quit, 3, 1)
+        grid.addWidget(self.pushButton_enter)
+        # grid.addWidget(self.pushButton_quit)
 
         self.pushButton_enter.clicked.connect(self.on_pushButton_enter_clicked)
-        self.pushButton_quit.clicked.connect(QCoreApplication.instance().quit)
+        #self.pushButton_quit.clicked.connect(QCoreApplication.instance().quit)
 
         initWidget.setLayout(grid)
         self.setCentralWidget(initWidget)
