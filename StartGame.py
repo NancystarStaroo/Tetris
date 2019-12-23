@@ -1,5 +1,6 @@
 import sys
 from PyQt5 import QtWidgets
+
 from Tetris import Tetris
 
 if __name__ == '__main__':

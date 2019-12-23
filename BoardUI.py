@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 import sys, random
-from PyQt5.QtWidgets import QApplication, qApp
+from PyQt5.QtWidgets import QApplication, qApp, QMessageBox, QWidget
 from Shape import Shape
 from PyQt5.QtCore import Qt
 
@@ -26,12 +26,10 @@ class BoardUI(QtWidgets.QWidget):
         self.Y = 0
         self.SQ = None
         self.removedLineNum = 0
-        self.status = False # True is start 
-        self.pause = False # True is pause
+        self.status = False  # True is start
+        self.pause = False  # True is pause
         
         self.timer = QtCore.QBasicTimer()
-        
-        # self.setFocusPolicy(Qt.StrongFocus) # 因为Tetris将keyEvent直接传递给BoardUI, 所以不需要获得当前的Focus
 
 
     def getPix(self, x, y): # 将相对的坐标转化为图上绝对的像素点坐标
@@ -226,9 +224,9 @@ class BoardUI(QtWidgets.QWidget):
     def pushSquare(self, shape):
         AbsPoints = self.RelPoints2AbsPoints(shape.vertex)
         
-        self.squares += [  [x, y, shape.color] for x, y in AbsPoints]
+        self.squares += [[x, y, shape.color] for x, y in AbsPoints]
 
-        self.readyRemoveLine() # 检查是否删除
+        self.readyRemoveLine()  # 检查是否删除
 
     def viewRank(self):
         pass
@@ -236,3 +234,10 @@ class BoardUI(QtWidgets.QWidget):
     def restart(self):
         self.initBoard()
         self.start()
+
+    def showEmptyDialog(self):
+        # newWindow = SecondWindow()
+        # newWindow.show()
+        # newWindow.exec_()
+        QMessageBox.information(self, "信息提示框", "你当前的分数是" + str(self.removedLineNum))
+

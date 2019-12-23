@@ -1,4 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow, QWidget, QInputDialog, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, QAction, qApp
+from PyQt5.QtCore import QCoreApplication
+from PyQt5.QtWidgets import QMainWindow, QWidget, QInputDialog, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, \
+    QAction, qApp, QLineEdit, QFrame, QMessageBox
 
 import sys
 from BoardUI import BoardUI
@@ -9,27 +11,29 @@ class Tetris(QMainWindow):
 
         self.setWindowTitle(title)
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight+30)
-# 
+
+
         initWidget = QWidget(self)
-        startButton = QPushButton('开始')
-        exitButton = QPushButton('退出')
-        startButton.clicked.connect(self.gameStart)
-        exitButton.clicked.connect(qApp.quit)
-        startButton.setShortcut('S') #设置快捷方式
 
-        hbox = QHBoxLayout()  # 设置水平垂直居中
-        hbox.addStretch(1)
-        hbox.addWidget(startButton)
-        hbox.addWidget(exitButton)
-        hbox.addStretch(1)
+        self.lineEdit_account = QLineEdit()
+        self.lineEdit_account.setPlaceholderText("请输入账号")
         vbox = QVBoxLayout()
-        vbox.addStretch(1)
-        vbox.addLayout(hbox)
-        vbox.addStretch(1)
-        initWidget.setLayout(vbox)
-        startButton.resize(100, 30)
-        self.setCentralWidget(initWidget)
+        vbox.addWidget(self.lineEdit_account)
+        self.lineEdit_password = QLineEdit()
+        self.lineEdit_password.setPlaceholderText("请输入密码")
 
+        vbox.addWidget(self.lineEdit_password)
+        self.pushButton_enter = QPushButton()
+        self.pushButton_enter.setText("确定")
+        self.pushButton_enter.clicked.connect(self.on_pushButton_enter_clicked)
+        self.pushButton_quit = QPushButton()
+        self.pushButton_quit.setText("取消")
+        self.pushButton_quit.clicked.connect(QCoreApplication.instance().quit)
+        vbox.addWidget(self.pushButton_enter)
+        vbox.addWidget(self.pushButton_quit)
+
+        initWidget.setLayout(vbox)
+        self.setCentralWidget(initWidget)
 
         self.center()
 
@@ -68,7 +72,7 @@ class Tetris(QMainWindow):
         qpause.triggered.connect(self.UI.PauseOrRestart)
         qrestart.triggered.connect(self.UI.restart)
         qhelp.triggered.connect(self.showDialog)
-        qrank.triggered.connect(self.UI.viewRank)
+        qrank.triggered.connect(self.UI.showEmptyDialog)
 
         self.sBar = self.statusBar()
         self.UI.msg2statusBar[str].connect(self.sBar.showMessage)
@@ -84,6 +88,22 @@ class Tetris(QMainWindow):
 
         if ok:
             self.le.setText(str(text))
+
+    def on_pushButton_enter_clicked(self):
+        account = self.lineEdit_account.text()
+        password = self.lineEdit_password.text()
+        print(account, password)
+
+        if account == 'admin' and password == '123456':
+            self.gameStart()
+
+        else:
+            QMessageBox.warning(self,
+                                "警告",
+                                "用户名或密码错误！",
+                                QMessageBox.Yes)
+            self.lineEdit.setFocus()
+
 
     def keyPressEvent(self, event): # 通过这种方法绕过Focus, 将keyEvent一直给centralWidget()
         self.centralWidget().keyPressEvent(event) # 传递给centralWidget
