@@ -51,11 +51,11 @@ class Tetris(QMainWindow):
             (screen.height()-size.height())/2)
 
     def gameStart(self):
-        self.sound = QSound('weather.wav', self)  # 1
+        self.sound = QSound('main.wav', self)  # 1
 
         self.UI = BoardUI(self)
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight+30)
-
+        
         menubar = self.menuBar()
         gameActions = menubar.addMenu('&游戏')
         helpActions = menubar.addMenu('帮助')
