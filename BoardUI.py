@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QApplication, qApp, QDialog, QWidget, QInputDialog, 
 from Shape import Shape
 from PyQt5.QtCore import Qt, pyqtSignal, QBasicTimer
 
-
 class BoardUI(QWidget):
     """游戏主要界面绘制，方块的绘制"""
 

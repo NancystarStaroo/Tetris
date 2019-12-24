@@ -2,6 +2,7 @@ from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QInputDialog, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, \
     QAction, qApp, QLineEdit, QFrame, QMessageBox, QLabel, QGridLayout
+from PyQt5.QtMultimedia import QSound
 
 from BoardUI import BoardUI
 
@@ -50,10 +51,8 @@ class Tetris(QMainWindow):
             (screen.height()-size.height())/2)
 
     def gameStart(self):
-        # pygame.init()
-        # sound = pygame.mixer.Sound("C:\Users\Xuan\Music\纯音乐.wav")
-        # sound.set_volume(1)
-        # sound.play()
+        self.sound = QSound('weather.wav', self)  # 1
+
         self.UI = BoardUI(self)
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight+30)
 
@@ -66,8 +65,9 @@ class Tetris(QMainWindow):
         qpause.setShortcut('P')
         qrestart = QAction('重新开始', self)
         qrestart.setShortcut('R')
+        qvolume = QAction('打开背景音乐', self)
+        qvolume.setShortcut('O')
         qrank = QAction('查看排名', self)
-
         qrank.setShortcut('V')
         qhelp = QAction('反馈', self)
         qhelp.setShortcut('H')
@@ -77,12 +77,14 @@ class Tetris(QMainWindow):
         gameActions.addAction(qrestart)
         helpActions.addAction(qhelp)
         gameActions.addAction(qrank)
+        gameActions.addAction(qvolume)
 
         qexit.triggered.connect(qApp.quit)
         qpause.triggered.connect(self.UI.PauseOrRestart)
         qrestart.triggered.connect(self.UI.restart)
         qhelp.triggered.connect(self.showDialog)
         qrank.triggered.connect(self.UI.showEmptyDialog)
+        qvolume.triggered.connect(self.sound.play)
      
 
         self.sBar = self.statusBar()
