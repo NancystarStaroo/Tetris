@@ -126,6 +126,8 @@ class BoardUI(QWidget):
             pass
         elif key == Qt.Key_R:
             pass
+        elif key == Qt.Key_O:
+            self.sound.play
         elif key == Qt.Key_Q:
             qApp.quit()
         elif key == Qt.Key_P:
