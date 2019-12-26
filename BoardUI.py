@@ -13,8 +13,6 @@ class BoardUI(QWidget):
     dropSpeed = 300
     pixWidth = squareWidth * boardWidth
     pixHeight = squareHeight * boardHeight
-
-
     msg2statusBar = pyqtSignal(str)
 
     def __init__(self, parent):
@@ -41,8 +39,6 @@ class BoardUI(QWidget):
     def paintEvent(self, event):
         paint = QPainter()
         paint.begin(self)
-
-
         for x, y, color in self.squares:
             pixPoint = self.getPix(x, y)
             self.drawSquare(pixPoint, paint, event, color) # 绘制矩形
@@ -101,12 +97,9 @@ class BoardUI(QWidget):
     def timerEvent(self, event):
         self.Y = self.Y+1
         msg = self.canPut(self.SQ)
-
-
         if msg[1] == 'out of buttom' or msg[1] == 'overlap': # 到达底部或出现重叠就说明不能放了
             self.Y -= 1
             self.pushSquare(self.SQ)
-
 
         if not msg[0]:
             self.putShape()
@@ -196,7 +189,6 @@ class BoardUI(QWidget):
         self.removedLineNum += cnt.count(BoardUI.boardWidth) # 更新removedLineNum
         self.msg2statusBar.emit(str(self.removedLineNum))
 
-
         nSquare = []
         for x, y, c in self.squares:
             dy = 0
@@ -212,7 +204,6 @@ class BoardUI(QWidget):
 
         self.squares = nSquare
         self.update()
-
 
     def PauseOrRestart(self):
         if not self.pause:
@@ -238,7 +229,15 @@ class BoardUI(QWidget):
         self.initBoard()
         self.start()
 
-    def showEmptyDialog(self):
+    def select_easy(self):
+        self.dropSpeed = 500
+        print(self.dropSpeed)
+    # noinspection PyGlobalUndefined
 
-        QMessageBox.information(self, "信息提示框", "你当前的分数是"+ str(self.removedLineNum))
+    def select_diff(self):
+        self.dropSpeed = 90
+        print(self.dropSpeed)
+
+    def showEmptyDialog(self):
+        QMessageBox.information(self, "信息提示框", "你当前的分数是"+ str(self.removedLineNum) + "暂居第一名")
 

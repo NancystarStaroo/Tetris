@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QInputDialog, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, \
-    QAction, qApp, QLineEdit, QFrame, QMessageBox, QLabel, QGridLayout
+    QAction, qApp, QLineEdit, QFrame, QMessageBox, QLabel, QGridLayout, QMenu
 from PyQt5.QtMultimedia import QSound
 
 from BoardUI import BoardUI
@@ -22,6 +22,7 @@ class Tetris(QMainWindow):
         self.password_line = QLineEdit()
         self.title_line.setPlaceholderText("请输入账号")
         self.password_line.setPlaceholderText("请输入密码")
+        self.password_line.setEchoMode(QLineEdit.Password)
         self.pushButton_enter = QPushButton()
         self.pushButton_quit = QPushButton()
         self.pushButton_enter.setText("登录")
@@ -65,6 +66,11 @@ class Tetris(QMainWindow):
         qpause.setShortcut('P')
         qrestart = QAction('重新开始', self)
         qrestart.setShortcut('R')
+        qset = QMenu('选择难度', self)
+        qeasy = QAction('简单', qset)
+        qdiff = QAction('困难', qset)
+        qset.addAction(qeasy)
+        qset.addAction(qdiff)
         qvolume = QAction('打开背景音乐', self)
         qvolume.setShortcut('O')
         qrank = QAction('查看排名', self)
@@ -78,6 +84,7 @@ class Tetris(QMainWindow):
         helpActions.addAction(qhelp)
         gameActions.addAction(qrank)
         gameActions.addAction(qvolume)
+        gameActions.addMenu(qset)
 
         qexit.triggered.connect(qApp.quit)
         qpause.triggered.connect(self.UI.PauseOrRestart)
@@ -85,7 +92,8 @@ class Tetris(QMainWindow):
         qhelp.triggered.connect(self.showDialog)
         qrank.triggered.connect(self.UI.showEmptyDialog)
         qvolume.triggered.connect(self.sound.play)
-     
+        qeasy.triggered.connect(self.UI.select_easy)
+        qdiff.triggered.connect(self.UI.select_diff)
 
         self.sBar = self.statusBar()
         self.UI.msg2statusBar[str].connect(self.sBar.showMessage)
