@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QApplication, qApp, QDialog, QWidget, QInputDialog, 
 from Shape import Shape
 from PyQt5.QtCore import Qt, pyqtSignal, QBasicTimer
 
+
 class BoardUI(QWidget):
     """游戏主要界面绘制，方块的绘制"""
 
@@ -228,15 +229,6 @@ class BoardUI(QWidget):
     def restart(self):
         self.initBoard()
         self.start()
-
-    def select_easy(self):
-        self.dropSpeed = 500
-        print(self.dropSpeed)
-    # noinspection PyGlobalUndefined
-
-    def select_diff(self):
-        self.dropSpeed = 90
-        print(self.dropSpeed)
 
     def showEmptyDialog(self):
         QMessageBox.information(self, "信息提示框", "你当前的分数是"+ str(self.removedLineNum) + "暂居第一名")

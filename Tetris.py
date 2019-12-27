@@ -52,7 +52,7 @@ class Tetris(QMainWindow):
             (screen.height()-size.height())/2)
 
     def gameStart(self):
-        self.sound = QSound('main.wav', self)  # 1
+        self.sound = QSound('main.wav', self)
 
         self.UI = BoardUI(self)
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight+30)
@@ -92,8 +92,8 @@ class Tetris(QMainWindow):
         qhelp.triggered.connect(self.showDialog)
         qrank.triggered.connect(self.UI.showEmptyDialog)
         qvolume.triggered.connect(self.sound.play)
-        qeasy.triggered.connect(self.UI.select_easy)
-        qdiff.triggered.connect(self.UI.select_diff)
+        qeasy.triggered.connect(self.select_easy)
+        qdiff.triggered.connect(self.select_diff)
 
         self.sBar = self.statusBar()
         self.UI.msg2statusBar[str].connect(self.sBar.showMessage)
@@ -124,3 +124,11 @@ class Tetris(QMainWindow):
     def keyPressEvent(self, event):
         self.centralWidget().keyPressEvent(event)
 
+    def select_easy(self):
+        self.UI = BoardUI(self)
+        self.UI.dropSpeed = 400
+        print(self.UI.dropSpeed)
+
+    def select_diff(self):
+        self.UI.dropSpeed = 100
+        print(self.UI.dropSpeed)
