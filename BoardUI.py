@@ -26,7 +26,6 @@ class BoardUI(QWidget):
         self.Y = 0
         self.SQ = None
         self.removedLineNum = 0
-        self.grade = []
         self.status = False  # True is start
         self.pause = False  # True is pause
         self.timer = QBasicTimer()
@@ -70,11 +69,14 @@ class BoardUI(QWidget):
         if not self.canPut(self.SQ)[0]: # 一开始就放不了了 ， 那就是结束了
             self.timer.stop()
             self.status = False
-            self.grade.append(str(self.removedLineNum))
             replay = QMessageBox.question(self, 'Message', 'Game Over! Do you want to play again?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
             if replay == QMessageBox.No:
+                with open("score_record.txt", "r") as f:
+                    f.truncate()
+
                 self.ignore()
+
             else:
                 self.restart()
 
@@ -182,13 +184,18 @@ class BoardUI(QWidget):
         return True, ''
 
     def readyRemoveLine(self):
-        
         cnt = [0] * 20
         for x, y, c in self.squares:
             cnt[y] += 1
         
         self.removedLineNum += cnt.count(BoardUI.boardWidth) # 更新removedLineNum
-        self.msg2statusBar.emit(str(self.removedLineNum))
+        self.msg2statusBar.emit("你当前的分数是" + str(self.removedLineNum))
+        
+        with open("score_record.txt", "r") as f:
+            record_score = int(f.read())
+            if self.removedLineNum > record_score:  # 如果玩家得分大于历史最高分，则将当前分数存档
+                with open("score_record.txt", "w") as f:
+                    f.write(str(self.removedLineNum))
 
         nSquare = []
         for x, y, c in self.squares:
@@ -224,12 +231,18 @@ class BoardUI(QWidget):
         self.readyRemoveLine()  # 检查是否删除
 
     def viewRank(self):
-        pass
+        with open("score_record.txt", "r") as f:
+            record_score = int(f.read())
+        QMessageBox.information(self, "信息提示框", "你当前的分数是" + str(self.removedLineNum) + "历史最高分是" + str(record_score))
 
     def restart(self):
         self.initBoard()
         self.start()
 
-    def showEmptyDialog(self):
-        QMessageBox.information(self, "信息提示框", "你当前的分数是"+ str(self.removedLineNum) + "暂居第一名")
-
+    # def showEmptyDialog(self):
+    #     with open("score_record.txt", "r") as f:
+    #         record_score = int(f.read())
+    #         if score > record_score:  # 如果玩家得分大于历史最高分，则将当前分数存档
+    #             with open("score_record.txt", "w") as f:
+    #                 f.write(str(score))
+        # QMessageBox.information(self, "信息提示框", "你当前的分数是"+ str(self.removedLineNum) + "暂居第一名")

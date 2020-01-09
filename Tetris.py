@@ -3,13 +3,11 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QWidget, QInputDialog, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, \
     QAction, qApp, QLineEdit, QFrame, QMessageBox, QLabel, QGridLayout, QMenu
 from PyQt5.QtMultimedia import QSound
-
 from BoardUI import BoardUI
 
 class Tetris(QMainWindow):
     def __init__(self, title):
         super(Tetris, self).__init__()
-
         self.setWindowTitle(title)
         self.setWindowIcon(QIcon('icon.jpg'))
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight+30)
@@ -52,8 +50,7 @@ class Tetris(QMainWindow):
             (screen.height()-size.height())/2)
 
     def gameStart(self):
-        self.sound = QSound('main.wav', self)
-
+        self.sound = QSound('main.wav')
         self.UI = BoardUI(self)
         self.resize(BoardUI.pixWidth, BoardUI.pixHeight+30)
         
@@ -90,7 +87,7 @@ class Tetris(QMainWindow):
         qpause.triggered.connect(self.UI.PauseOrRestart)
         qrestart.triggered.connect(self.UI.restart)
         qhelp.triggered.connect(self.showDialog)
-        qrank.triggered.connect(self.UI.showEmptyDialog)
+        qrank.triggered.connect(self.UI.viewRank)
         qvolume.triggered.connect(self.sound.play)
         qeasy.triggered.connect(self.select_easy)
         qdiff.triggered.connect(self.select_diff)
