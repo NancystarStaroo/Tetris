@@ -233,7 +233,7 @@ class BoardUI(QWidget):
     def viewRank(self):
         with open("score_record.txt", "r") as f:
             record_score = int(f.read())
-        QMessageBox.information(self, "信息提示框", "你当前的分数是" + str(self.removedLineNum) + "历史最高分是" + str(record_score))
+        QMessageBox.information(self, "信息提示框", "你当前的分数是" + str(self.removedLineNum) + ", 历史最高分是" + str(record_score))
 
     def restart(self):
         self.initBoard()
