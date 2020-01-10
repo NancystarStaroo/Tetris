@@ -1,5 +1,5 @@
 from PyQt5.QtGui import QIcon, QColor, QBrush, QPainter
-from PyQt5.QtWidgets import QApplication, qApp, QDialog, QWidget, QInputDialog, QMessageBox
+from PyQt5.QtWidgets import qApp, QWidget, QMessageBox
 from Shape import Shape
 from PyQt5.QtCore import Qt, pyqtSignal, QBasicTimer
 
@@ -72,8 +72,8 @@ class BoardUI(QWidget):
             replay = QMessageBox.question(self, 'Message', 'Game Over! Do you want to play again?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
 
             if replay == QMessageBox.No:
-                with open("score_record.txt", "r") as f:
-                    f.truncate()
+                with open("score_record.txt", "w") as f:
+                    f.write(str(0))
 
                 self.ignore()
 

@@ -1,7 +1,7 @@
-from PyQt5.QtCore import QCoreApplication, Qt
+from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QWidget, QInputDialog, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, \
-    QAction, qApp, QLineEdit, QFrame, QMessageBox, QLabel, QGridLayout, QMenu
+from PyQt5.QtWidgets import QMainWindow, QWidget, QPushButton, QDesktopWidget, \
+    QAction, qApp, QLineEdit, QMessageBox, QLabel, QGridLayout, QMenu
 from PyQt5.QtMultimedia import QSound
 from BoardUI import BoardUI
 
@@ -56,7 +56,7 @@ class Tetris(QMainWindow):
         
         menubar = self.menuBar()
         gameActions = menubar.addMenu('&游戏')
-        helpActions = menubar.addMenu('帮助')
+        # helpActions = menubar.addMenu('帮助')
         qexit = QAction('退出', self)
         qexit.setShortcut('Q')
         qpause = QAction('暂停', self)
@@ -72,13 +72,13 @@ class Tetris(QMainWindow):
         qvolume.setShortcut('O')
         qrank = QAction('查看排名', self)
         qrank.setShortcut('V')
-        qhelp = QAction('反馈', self)
-        qhelp.setShortcut('H')
+        # qhelp = QAction('反馈', self)
+        # qhelp.setShortcut('H')
 
         gameActions.addAction(qexit)
         gameActions.addAction(qpause)
         gameActions.addAction(qrestart)
-        helpActions.addAction(qhelp)
+        # helpActions.addAction(qhelp)
         gameActions.addAction(qrank)
         gameActions.addAction(qvolume)
         gameActions.addMenu(qset)
@@ -86,7 +86,7 @@ class Tetris(QMainWindow):
         qexit.triggered.connect(qApp.quit)
         qpause.triggered.connect(self.UI.PauseOrRestart)
         qrestart.triggered.connect(self.UI.restart)
-        qhelp.triggered.connect(self.showDialog)
+        # qhelp.triggered.connect(self.showDialog)
         qrank.triggered.connect(self.UI.viewRank)
         qvolume.triggered.connect(self.sound.play)
         qeasy.triggered.connect(self.select_easy)
@@ -100,11 +100,11 @@ class Tetris(QMainWindow):
 
         self.UI.start()
 
-    def showDialog(self):
-        text, ok = QInputDialog.getText(self, 'Feedback', 'Please input your feedback:')
+    # def showDialog(self):
+    #     text, ok = QInputDialog.getText(self, 'Feedback', 'Please input your feedback:')
 
-        if ok:
-            self.le.setText(str(text))
+    #     if ok:
+    #         self.le.setText(str(text))
 
     def on_pushButton_enter_clicked(self):
         account = self.title_line.text()
