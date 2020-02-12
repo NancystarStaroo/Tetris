@@ -238,11 +238,3 @@ class BoardUI(QWidget):
     def restart(self):
         self.initBoard()
         self.start()
-
-    # def showEmptyDialog(self):
-    #     with open("score_record.txt", "r") as f:
-    #         record_score = int(f.read())
-    #         if score > record_score:  # 如果玩家得分大于历史最高分，则将当前分数存档
-    #             with open("score_record.txt", "w") as f:
-    #                 f.write(str(score))
-        # QMessageBox.information(self, "信息提示框", "你当前的分数是"+ str(self.removedLineNum) + "暂居第一名")

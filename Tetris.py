@@ -129,3 +129,17 @@ class Tetris(QMainWindow):
     def select_diff(self):
         self.UI.dropSpeed = 100
         print(self.UI.dropSpeed)
+    
+    def closeEvent(self, event):
+
+        reply = QMessageBox.question(self, 'Message',
+                                     "Do you want to exit?", QMessageBox.Yes |
+                                     QMessageBox.No, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            with open("score_record.txt", "w") as f:
+                f.write(str(0))
+            event.accept()
+       
+        else:
+            event.ignore()
